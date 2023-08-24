@@ -48,5 +48,7 @@ typedef void (^camera_wrapper_callback_t)(size_t width, size_t height, void *dat
 - (NSString*) getName;
 
 @property float focus;
+@property float iso;
+@property float exposure_s;
 
 @end

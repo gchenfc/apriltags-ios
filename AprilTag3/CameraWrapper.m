@@ -17,6 +17,8 @@
     self = [super init];
     callback = _callback;
     
+    _iso = 100;
+    _exposure_s = 0.001;
     devices = [[NSMutableArray alloc] init];
     NSArray *allDevices = [AVCaptureDevice devices];
     
@@ -139,6 +141,15 @@
                 if ([videoDevice isFocusModeSupported:AVCaptureFocusModeLocked]) {
                     [videoDevice setFocusModeLockedWithLensPosition:_focus completionHandler:nil];
                     printf("set focus %f\n", _focus);
+                }
+                if ([videoDevice isExposureModeSupported:AVCaptureExposureModeCustom]) {
+                    CMTime exposureTime = CMTimeMakeWithSeconds(_exposure_s, 1000*1000*1000);
+
+//                    [videoDevice setExposureModeCustomWithDuration:AVCaptureExposureDurationCurrent ISO:_iso completionHandler:nil];
+                    [videoDevice setExposureModeCustomWithDuration:exposureTime ISO:_iso completionHandler:nil];
+
+                    printf("set Exposure %f,  %lld,  %d\n", _exposure_s, exposureTime.value, AVCaptureExposureDurationCurrent.timescale);
+                    printf("set ISO %f\n", _iso);
                 }
                 printf("selected: %s\n", [[[videoDevice activeFormat] debugDescription] UTF8String]);
                 

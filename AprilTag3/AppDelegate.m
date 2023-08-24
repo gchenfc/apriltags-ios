@@ -264,6 +264,14 @@ static NSMutableArray *blockWrappers;
             cameraWrapper.focus = atoi(value) / 100.0;
             [cameraWrapper setInput:-1];
         }
+        if (!strcmp(key, "iso")) {
+            cameraWrapper.iso = atoi(value);
+            [cameraWrapper setInput:-1];
+        }
+        if (!strcmp(key, "exposure")) {
+            cameraWrapper.exposure_s = atoi(value);
+            [cameraWrapper setInput:-1];
+        }
         if (!strcmp(key, "hammingLimit")) {
             hammingLimit = atoi(value);
             if (hammingLimit > 1)
@@ -309,6 +317,8 @@ static NSMutableArray *blockWrappers;
     FILE *f = fopen("prefs.txt", "w");
     fprintf(f, "cameraIndex\n%d\n", (int) [cameraWrapper getIndex]);
     fprintf(f, "focus\n%d\n", (int) (100*cameraWrapper.focus));
+    fprintf(f, "iso\n%d\n", (int) (cameraWrapper.iso));
+    fprintf(f, "exposure\n%d\n", (int) (cameraWrapper.exposure_s));
     fprintf(f, "hammingLimit\n%d\n", hammingLimit);
     fprintf(f, "quad_decimate\n%.1f\n", _detector->quad_decimate);
 //    fprintf(f, "refine_pose\n%d\n", _detector->refine_pose);
@@ -697,6 +707,76 @@ static NSMutableArray *blockWrappers;
             cameraWrapper.focus = ((UISlider*) sender).value;
             [cameraWrapper setInput:-1];
             [label setText:[NSString stringWithFormat:@"Camera Focus (%.2f)", cameraWrapper.focus]];
+        };
+        
+        [slider addTarget:[[BlockWrapper alloc] initWithBlock:cb] action:@selector(invoke:) forControlEvents:UIControlEventValueChanged ];
+        
+        y += slider.frame.size.height + ypad;
+    }
+    
+    if (1) {
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(labelx, y, sizex-labelx, sizey)];
+        [label setText:[NSString stringWithFormat:@"Camera ISO (%.2f)", [cameraWrapper iso]]];
+        [paramView addSubview:label];
+        y += label.frame.size.height;
+        
+        AVCaptureDevice *videoDevice = [cameraWrapper getAVCaptureDeviceInput].device;
+        float min_iso = videoDevice.activeFormat.minISO;
+        float max_iso = videoDevice.activeFormat.maxISO;
+        
+        UISlider *slider = [[UISlider alloc] initWithFrame:CGRectMake(labelx, y, sizex-labelx, sizey)];
+        [slider setMaximumValue:1];
+        [slider setMinimumValue:0];
+        [slider setValue: (log2f([cameraWrapper iso]) - log2f(min_iso)) / (log2f(max_iso) - log2f(min_iso))];
+        [slider setEnabled:TRUE];
+        [slider setContinuous:TRUE];
+        [paramView addSubview:slider];
+        
+        blockwrapper_callback_t cb = ^(UIControl *sender){
+            // Logarithmically scale the value from min_iso to max_iso
+            float val = ((UISlider*) sender).value;
+            cameraWrapper.iso = exp2f((log2f(max_iso) - log2f(min_iso)) * val + log2f(min_iso));
+            printf("The min/max ISO are %.2f %.2f", videoDevice.activeFormat.minISO, videoDevice.activeFormat.maxISO);
+            cameraWrapper.iso = MAX(MIN(cameraWrapper.iso, max_iso), min_iso);
+            
+            [cameraWrapper setInput:-1];
+            [label setText:[NSString stringWithFormat:@"Camera Iso (%.2f)", cameraWrapper.iso]];
+        };
+        
+        [slider addTarget:[[BlockWrapper alloc] initWithBlock:cb] action:@selector(invoke:) forControlEvents:UIControlEventValueChanged ];
+        
+        y += slider.frame.size.height + ypad;
+    }
+    
+    if (1) {
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(labelx, y, sizex-labelx, sizey)];
+        [label setText:[NSString stringWithFormat:@"Camera Exposure (%.2es)", [cameraWrapper exposure_s]]];
+        [paramView addSubview:label];
+        y += label.frame.size.height;
+        
+        AVCaptureDevice *videoDevice = [cameraWrapper getAVCaptureDeviceInput].device;
+        CMTime min_exp_cmt = videoDevice.activeFormat.minExposureDuration;
+        CMTime max_exp_cmt = videoDevice.activeFormat.maxExposureDuration;
+//        printf("Min Max: %lld %d %lld %d\n", min_exp_cmt.value, min_exp_cmt.timescale, max_exp_cmt.value, max_exp_cmt.timescale);
+        float min_exp = min_exp_cmt.value / (float) min_exp_cmt.timescale;
+        float max_exp = max_exp_cmt.value / (float) max_exp_cmt.timescale;
+
+        UISlider *slider = [[UISlider alloc] initWithFrame:CGRectMake(labelx, y, sizex-labelx, sizey)];
+        [slider setMaximumValue:1];
+        [slider setMinimumValue:0];
+        [slider setValue: (log2f([cameraWrapper exposure_s]) - log2f(min_exp)) / (log2f(max_exp) - log2f(min_exp))];
+        [slider setEnabled:TRUE];
+        [slider setContinuous:TRUE];
+        [paramView addSubview:slider];
+        
+        blockwrapper_callback_t cb = ^(UIControl *sender){
+            // Logarithmically scale the value from min_exp to max_exp
+            float val = ((UISlider*) sender).value;
+            cameraWrapper.exposure_s = exp2f((log2f(max_exp) - log2f(min_exp)) * val + log2f(min_exp));
+            cameraWrapper.exposure_s = MAX(MIN(cameraWrapper.exposure_s, max_exp), min_exp);
+            
+            [cameraWrapper setInput:-1];
+            [label setText:[NSString stringWithFormat:@"Camera Exposure (%.2es)", cameraWrapper.exposure_s]];
         };
         
         [slider addTarget:[[BlockWrapper alloc] initWithBlock:cb] action:@selector(invoke:) forControlEvents:UIControlEventValueChanged ];
