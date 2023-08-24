@@ -519,6 +519,7 @@ static NSMutableArray *blockWrappers;
     paramView = [[UIScrollView alloc] init];
     [paramView setScrollEnabled:YES];
     [paramView setShowsVerticalScrollIndicator:YES];
+    [paramView setBackgroundColor:[UIColor lightGrayColor]];
     
     
     //    UIWebView *view = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 320, 480)];
