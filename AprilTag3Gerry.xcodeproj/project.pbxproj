@@ -190,7 +190,7 @@
 		E7043F4322502211006F24AA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E7043F4422502211006F24AA /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		E7043F4522502211006F24AA /* Icon-512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-512.png"; sourceTree = "<group>"; };
-		E75127BA224FDECD00C49DD7 /* AprilTag3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AprilTag3.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E75127BA224FDECD00C49DD7 /* AprilTag3Gerry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AprilTag3Gerry.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E75127BD224FDECD00C49DD7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		E75127BE224FDECD00C49DD7 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		E75127C0224FDECD00C49DD7 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
@@ -466,7 +466,7 @@
 		E75127BB224FDECD00C49DD7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E75127BA224FDECD00C49DD7 /* AprilTag3.app */,
+				E75127BA224FDECD00C49DD7 /* AprilTag3Gerry.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -582,9 +582,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		E75127B9224FDECD00C49DD7 /* AprilTag3 */ = {
+		E75127B9224FDECD00C49DD7 /* AprilTag3Gerry */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E75127D0224FDECD00C49DD7 /* Build configuration list for PBXNativeTarget "AprilTag3" */;
+			buildConfigurationList = E75127D0224FDECD00C49DD7 /* Build configuration list for PBXNativeTarget "AprilTag3Gerry" */;
 			buildPhases = (
 				E75127B6224FDECD00C49DD7 /* Sources */,
 				E75127B7224FDECD00C49DD7 /* Frameworks */,
@@ -594,9 +594,9 @@
 			);
 			dependencies = (
 			);
-			name = AprilTag3;
+			name = AprilTag3Gerry;
 			productName = AprilTag3;
-			productReference = E75127BA224FDECD00C49DD7 /* AprilTag3.app */;
+			productReference = E75127BA224FDECD00C49DD7 /* AprilTag3Gerry.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -613,7 +613,7 @@
 					};
 				};
 			};
-			buildConfigurationList = E75127B5224FDECD00C49DD7 /* Build configuration list for PBXProject "AprilTag3" */;
+			buildConfigurationList = E75127B5224FDECD00C49DD7 /* Build configuration list for PBXProject "AprilTag3Gerry" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -626,7 +626,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				E75127B9224FDECD00C49DD7 /* AprilTag3 */,
+				E75127B9224FDECD00C49DD7 /* AprilTag3Gerry */,
 			);
 		};
 /* End PBXProject section */
@@ -855,7 +855,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 77P967T7RT;
+				DEVELOPMENT_TEAM = MRX9MN8W6U;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/AprilTag3/apriltags";
 				INFOPLIST_FILE = AprilTag3/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -865,7 +865,7 @@
 				);
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = april.AprilTag;
+				PRODUCT_BUNDLE_IDENTIFIER = april.AprilTagGerry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -876,7 +876,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 77P967T7RT;
+				DEVELOPMENT_TEAM = MRX9MN8W6U;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/AprilTag3/apriltags";
 				INFOPLIST_FILE = AprilTag3/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -886,7 +886,7 @@
 				);
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = april.AprilTag;
+				PRODUCT_BUNDLE_IDENTIFIER = april.AprilTagGerry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -895,7 +895,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E75127B5224FDECD00C49DD7 /* Build configuration list for PBXProject "AprilTag3" */ = {
+		E75127B5224FDECD00C49DD7 /* Build configuration list for PBXProject "AprilTag3Gerry" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E75127CE224FDECD00C49DD7 /* Debug */,
@@ -904,7 +904,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E75127D0224FDECD00C49DD7 /* Build configuration list for PBXNativeTarget "AprilTag3" */ = {
+		E75127D0224FDECD00C49DD7 /* Build configuration list for PBXNativeTarget "AprilTag3Gerry" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E75127D1224FDECD00C49DD7 /* Debug */,
