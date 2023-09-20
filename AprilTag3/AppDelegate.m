@@ -217,11 +217,14 @@ static NSMutableArray *blockWrappers;
     [cameraWrapper setInput:0];
     hammingLimit = 0;
 //    _detector->refine_decode = 0;
-    _detector->quad_decimate = 2;
+//    _detector->decode_sharpening = 2;
+    _detector->quad_decimate = 1;
     _detector->quad_sigma = 0;
     
     _detector->nthreads = ncores;
     _detector->debug = 0;
+    
+//    _detector->qtp.max_nmaxima = 20;
     
     apriltag_detector_clear_families(_detector);
     apriltag_family_t *default_family;
@@ -265,11 +268,11 @@ static NSMutableArray *blockWrappers;
             [cameraWrapper setInput:-1];
         }
         if (!strcmp(key, "iso")) {
-            cameraWrapper.iso = atoi(value);
+            cameraWrapper.iso = atof(value);
             [cameraWrapper setInput:-1];
         }
         if (!strcmp(key, "exposure")) {
-            cameraWrapper.exposure_s = atoi(value);
+            cameraWrapper.exposure_s = atof(value);
             [cameraWrapper setInput:-1];
         }
         if (!strcmp(key, "hammingLimit")) {
@@ -317,8 +320,8 @@ static NSMutableArray *blockWrappers;
     FILE *f = fopen("prefs.txt", "w");
     fprintf(f, "cameraIndex\n%d\n", (int) [cameraWrapper getIndex]);
     fprintf(f, "focus\n%d\n", (int) (100*cameraWrapper.focus));
-    fprintf(f, "iso\n%d\n", (int) (cameraWrapper.iso));
-    fprintf(f, "exposure\n%d\n", (int) (cameraWrapper.exposure_s));
+    fprintf(f, "iso\n%f\n", (float) (cameraWrapper.iso));
+    fprintf(f, "exposure\n%f\n", (float) (cameraWrapper.exposure_s));
     fprintf(f, "hammingLimit\n%d\n", hammingLimit);
     fprintf(f, "quad_decimate\n%.1f\n", _detector->quad_decimate);
 //    fprintf(f, "refine_pose\n%d\n", _detector->refine_pose);
@@ -1607,6 +1610,8 @@ void neon_convert3(uint8_t * __restrict dest, uint8_t * __restrict src, int numP
 
 - (void) processImageWithWidth:(size_t) width andHeight:(size_t) height andData:(void *)data
 {
+    uint64_t utime_imcap = utime_now();
+    
     timeprofile_t *tp = timeprofile_create();
     timeprofile_stamp(tp, "begin");
     
@@ -1687,17 +1692,19 @@ void neon_convert3(uint8_t * __restrict dest, uint8_t * __restrict src, int numP
         uint64_t utime = utime_now();
         
         int ndets = zarray_size(pf->detections);
-        uint32_t packetmax = 24 + 88*ndets;
+        uint32_t packetmax = 32 + 88*ndets;
         uint8_t *packet = malloc(packetmax);
         uint32_t packetpos = 0;
         
         // output the header (24 bytes)
         encode_u32(packet, packetmax, &packetpos, 0x41505249); // "APRI";
         encode_u32(packet, packetmax, &packetpos, 0x4c544147); // "LTAG";
-        encode_u32(packet, packetmax, &packetpos, 0x00010002); // protocol version (high 16 bits), sub-version (low 16 bits);
+        encode_u32(packet, packetmax, &packetpos, 0x00010102); // protocol version (high 16 bits), sub-version (low 16 bits);
         encode_u32(packet, packetmax, &packetpos, ndets);
         encode_u32(packet, packetmax, &packetpos, (utime >> 32) & 0xffffffff);
         encode_u32(packet, packetmax, &packetpos, utime & 0xffffffff);
+        encode_u32(packet, packetmax, &packetpos, (utime_imcap >> 32) & 0xffffffff);
+        encode_u32(packet, packetmax, &packetpos, utime_imcap & 0xffffffff);
         
         // output information for each tag (88 bytes each)
         for (int detidx = 0; detidx < ndets; detidx++) {
